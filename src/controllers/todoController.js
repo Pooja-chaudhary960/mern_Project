@@ -1,5 +1,5 @@
 
-import todoService from "../services/todoService.js";
+import todoService from "../services/todoServices.js";
 
 const getTodos = (req, res) => {
   const data = todoService.getAll();

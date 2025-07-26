@@ -231,3 +231,74 @@ root/
 - db.products.find().skip(3)
 
 
+# Mongoose 
+
+- ODM(object data modeling) of MongoDB for Node.js
+- Schema validation.
+- Middleware
+- Relationships
+
+# Schema 
+- Structure/rule of a document/data
+
+# Model
+- Class built from schema, interact with the database
+- Semantics: Always singular, Pascal case
+- For e.g.: Product, ProductOrder
+
+
+# Encryption & Decryption
+- Encryption: Converting normal readable text into cipher (unreadable) text.
+
+for e.g: hello => asa8s90a8w90N&*BOIIuihb
+
+- Decryption: Converting cipher text to readable form
+
+# Types
+- Symmetric: Same key is used for encryption and decryption. for e.g AES
+- Asymmetric: Different keys are used for encryption and decryption. for Private key, public key, RSA algorithm
+Hashing
+- Type of encryption, this is one way encryption.
+- Register: Test123456 => 3asdf4a86sdf16w84e1fas68df4asd8f6asdf4 (store)
+- Login: Test123456 => asdf4a86sdf16w84e1fas68df4asd8f6asdf (compare)
+Salt
+- Adding random texts in the hash value
+Auth
+- Login success
+Token generated - JWT
+Store token - Cookie storage, session storage, local storage
+Append this token in every requests to handle auth
+JWT - JSON Web Token
+Used for auth
+Self verified
+Tamper-proof
+Structure
+Header
+Payload
+Signature
+Cookie
+Can be stored in both server and browser
+Size: 4KB
+Expiry date can be set
+Available in all tabs
+Session storage
+Can be stored only in browser
+Size: 5MB
+Expires on tab close
+Available in one tab only
+Local storage
+Can be stored only in browser
+Size: 5MB - 10MB
+Never expires
+Available in all tabs
+Middleware
+Function that sits between request and response.
+Browser ----- Request -----> Server Middleware Server ------ Response -----> Browser
+
+Function that has the accessibility of both request and response objects
+It has the functionality to go to next() function call
+Usage
+Logging
+Authentication & Authorization
+Error handling
+Modify request data

@@ -1,42 +1,36 @@
+import bodyParser from "body-parser";
 import express from "express";
-import fs from "fs";
+
 import config from "./config/config.js";
-import productRoutes from './routes/productRoutes.js';
-
-
+import authRoutes from "./routes/authRoute.js";
+import productRoutes from "./routes/productRoutes.js";
+import userRoutes from "./routes/userRoute.js";
+import todoRoutes from "./routes/todoRoute.js";
+import connectDB from "./config/database.js";
+import logger from "./middlewares/logger.js";
+import auth from "./middlewares/auth.js";
 
 const app = express();
 
-app.get("/",(req, res)=>{
-    res.json({
-        name:config.name,
-        port: config.port,
-        version: config.version,
-        
-    });
+connectDB();
+
+app.use(bodyParser.json());
+app.use(logger);
+
+app.get("/", (req, res) => {
+  res.json({
+    name: config.name,
+    port: config.port,
+    status: "OK",
+    version: config.version,
+  });
 });
 
-app.use('/products', productRoutes)
+app.use("/api/auth", authRoutes);
+app.use("/api/products", productRoutes);
+app.use("/api/users", auth, userRoutes);
+app.use("/todos", todoRoutes);
 
-app.get('/products',(req,res)=>{
-    const products = fs.readFileSync('./src/data/products.json',"utf8");
-    res.json(JSON.parse(products));
-
+app.listen(config.port, () => {
+  console.log(`Server running at port ${config.port}...`);
 });
-
-app.get("/products",(req,res)=>{
-    const products=["Samsung s24 ultra", "Iphone 14","Acer predator laptop"];
-    res.json(products);
-});
-
-app.listen(config, ()=>{
-    console.log(`Server running at port ${config}....`);
-});
-
-const profile ={
-    name:"pooja",
-    age:20,
-    address:"Dang",
-    email:"puja@gmail.com"
-}
-

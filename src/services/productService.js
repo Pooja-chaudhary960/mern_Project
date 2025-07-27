@@ -12,11 +12,18 @@ const getProductById = async (id) => {
   return product;
 };
 
-const createProduct = async (data) => {
-  const createdProduct = await Product.create(data);
-
-  return createdProduct;
+const createProduct = async (data, createdBy) => {
+  try {
+    const createdProduct = await Product.create({
+      ...data,
+      createdBy,
+    });
+    return createdProduct;
+  } catch (error) {
+    throw new Error("Error creating product: " + error.message);
+  }
 };
+
 
 const updateProduct = async (id, data) => {
   const updatedProduct = await Product.findByIdAndUpdate(id, data, {

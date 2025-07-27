@@ -17,6 +17,7 @@ connectDB();
 app.use(bodyParser.json());
 app.use(logger);
 
+
 app.get("/", (req, res) => {
   res.json({
     name: config.name,

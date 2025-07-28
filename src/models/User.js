@@ -1,68 +1,67 @@
 import mongoose from "mongoose";
+import { ADMIN, MERCHANT, USER } from "../constants/roles.js";
 
-const userSchema=new mongoose.Schema({
+const userSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: [true, "User name is required."],
+  },
+  email: {
+    type: String,
+    required: [true, "User email is required."],
+    trim: true,
+    lowercase: true,
+    validate: {
+      validator: (value) => {
+        const emailRegex = /^((?!\.)[\w\-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/;
 
-    name:{
-        type:String,
-        required:[true, "User name is required."],
+        return emailRegex.test(value);
+      },
+      message: "Invalid email address.",
     },
-    email:{
-        type:String,
-        trim:true,
-        required:[true, "User email is required."],
-        validate:{
-                validator:(value)=>{
-                 const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-                 return emailRegex.test(value);
-                },
-                message:"Invalid email address.",
-            }
+  },
+  password: {
+    type: String,
+    required: [true, "User password is required."],
+    minLength: [6, "Password length must be greater than 6."],
+  },
+  roles: {
+    type: [String],
+    default: [USER],
+    enum: [USER, ADMIN, MERCHANT],
+  },
+  address: {
+    city: {
+      type: String,
+      required: [true, "User city address is required."],
     },
-     password:{
-        type:String,
-        required:[true, "User password is required."],
-        minLength:[6,"Password length must be greater than 6."],
-        select: false,
+    country: {
+      type: String,
+      default: "Nepal",
     },
-     roles:{
-        type:String,
-        default:"USER",
-        enum: ["USER","ADMIN","MERCHANT"]
+    province: {
+      type: String,
+      required: [true, "User province is required."],
     },
-    address:{
-        city:{
-            type: String,
-            required:[true, "User city address is required"],
-        },
-        country:{
-            type:String,
-            default:"Nepal",
-        },
-        province:{
-            type:String,
-            required:[true, "User province is required."],
-            
-        },
-        street:{
-            type:String,
-        }
+    street: {
+      type: String,
     },
-    phone:{
-        type:String,
-        required:[true, "User phone number is required."],
-        unique:[true, "Phone number must be unique."],
-    },
-
-    profileUrl:{
-        type:String
-    },
-    createdAT:{
-        type:Date,
-        default:Date.now(),
-        immutable:true,
-    },
+  },
+  phone: {
+    type: String,
+    required: [true, "User phone number is required."],
+    unique: [true, "Phone number must be unique."],
+  },
+  profileImageUrl: {
+    type: String,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now(),
+    immutable: true,
+  },
 });
 
-const model = mongoose.model("User",userSchema);
+const model = mongoose.model("User", userSchema);
 
 export default model;

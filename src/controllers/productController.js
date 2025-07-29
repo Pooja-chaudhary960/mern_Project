@@ -30,11 +30,11 @@ const updateProduct = async (req, res) => {
   const id = req.params.id;
 
   try {
-    const data = await productService.updateProduct(id, req.body, user._id);
+    const data = await productService.updateProduct(id, req.body, req.user._id);
 
     res.status(201).json(data);
   } catch (error) {
-    res.status(500).send(error.message);
+    res.status(error.statusCode || 500).send(error.message);
   }
 };
 
@@ -42,7 +42,7 @@ const deleteProduct = async (req, res) => {
   const id = req.params.id;
 
   try {
-    await productService.deleteProduct(id);
+    await productService.deleteProduct(id, req.user._id);
 
     res.send(`Product deleted successfully with id: ${id}`);
   } catch (error) {

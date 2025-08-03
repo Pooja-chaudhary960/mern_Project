@@ -302,3 +302,20 @@ Logging
 Authentication & Authorization
 Error handling
 Modify request data
+
+# Product order
+1. User id
+2. Product items
+  a.product id
+  b.product quantity
+3. status
+4. orderNumber
+5. totalPrice
+6. shippingAddress
+
+
+# File upload
+1. Data/File input: Body -> FormData -> Multer
+2. Temporary storage : /uploads-> Buffer (Binary data)
+3. Storage bucket : upload to Cloudinary -> filePath/url
+4. Set the filepath/url: use this filepath/url to store in database.

@@ -9,8 +9,13 @@ const router = express.Router();
 // GET: Retrieve all orders
 router.get('/',auth, roleBasedAuth(ADMIN), orderController.getOrders);
 
+router.get('/user',auth,orderController.getOrdersByUser);
+router.get('/:id',auth,roleBasedAuth(ADMIN),orderController.getOrdersByUser);
+
 // POST: Create an order, with auth middleware
 router.post('/', auth, orderController.createOrder);
+
+router.put("/:id", auth, roleBasedAuth(ADMIN), orderController.updateOrder);
 
 router.delete('/:id', auth, roleBasedAuth (ADMIN), orderController.deleteOrder);
 

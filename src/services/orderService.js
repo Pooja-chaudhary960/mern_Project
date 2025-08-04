@@ -8,6 +8,30 @@ const getOrders = async () => {
   return orders;
 };
 
+const getOrdersByUser = async (userId) => {
+  const orders = await Order.find({user: userId}).
+  populate("orderItems.product")
+  .populate("user",['name','email','phone','address']);
+  return orders;
+};
+
+const getOrderById = async (id) => {
+  const order = await Order.findById(id)
+    .populate("orderItems.product")
+    .populate("user", ["name", "email", "phone", "address"])
+    .populate("payment");
+
+  if (!order) {
+    throw {
+      statusCode: 404,
+      message: "Order not found.",
+    };
+  }
+
+  return order;
+};
+
+
 const createOrder = async (data, userId) => {
   // Generate a unique order number using crypto
   const orderNumber = crypto.randomUUID();
@@ -19,9 +43,18 @@ const createOrder = async (data, userId) => {
     orderNumber
   });
   };
+  const updateOrder = async (id, data) => {
+  return await Order.findByIdAndUpdate(
+    id,
+    {
+      status: data.status,
+    },
+    { new: true }
+  );
+};
   const deleteOrder = async (id) =>{
     return await Order.findByIdAndDelete(id);
   };
 
 
-export default { getOrders, createOrder, deleteOrder };
+export default { getOrders, createOrder, deleteOrder, getOrdersByUser, getOrderById, updateOrder};

@@ -10,6 +10,26 @@ const getOrders = async (req, res) => {
   }
 };
 
+const getOrdersByUser = async (req, res) => {
+  try {
+    const data = await orderService.getOrdersByUser(req.user._id);
+    res.json(data);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
+const getOrderById = async (req, res) => {
+  try {
+    const data = await orderService.getOrderById(req.params.id);
+
+    res.json(data);
+  } catch (error) {
+    res.status(error.statusCode || 500).send(error.message);
+  }
+};
+
+
 const createOrder = async (req, res) => {
   const input = req.body;
 
@@ -34,13 +54,26 @@ const createOrder = async (req, res) => {
   }
 };
 
+const updateOrder = async (req, res) => {
+  try {
+    const data = await orderService.updateOrder(req.params.id, req.body);
+
+    res.json(data);
+  } catch (error) {
+    res.status(error.statusCode || 500).send(error.message);
+  }
+};
+
+
 const deleteOrder = async (req, res) => {
   try {
-    const data = await orderService.deleteOrder();
- res.send("Order deleted successfully.")
+    await orderService.deleteOrder(req.params.id);
+
+    res.send("Order deleted successfully.");
   } catch (error) {
     res.status(500).send(error.message);
   }
 };
 
-export default { getOrders, createOrder , deleteOrder};
+
+export default { getOrders, createOrder , deleteOrder,getOrdersByUser, getOrderById, updateOrder};

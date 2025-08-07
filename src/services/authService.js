@@ -1,29 +1,18 @@
-import User from "../models/User.js";
 import bcrypt from "bcryptjs";
+import ResetPassword from "../models/ResetPassword.js";
+import User from "../models/User.js";
+import sendEmail from "../utils/email.js";
+import config from "../config/config.js";
 
 const login = async (data) => {
-  
-  // Fetch the user from the database and explicitly select the password field
-  const user = await User.findOne({ email: data.email }).select("+password");
+  const user = await User.findOne({ email: data.email });
 
-  if (!user) {
-    throw { statusCode: 404, message: "User not found." };
-  }
+  if (!user) throw { statusCode: 404, message: "User not found." };
 
-  // Ensure the password field is not undefined
-  if (!user.password) {
-    throw { statusCode: 400, message: "Password not found in the database." };
-  }
-  console.log("Stored Password Hash:", user.password);
-
-  // Compare the input password with the stored hash
   const isPasswordMatch = bcrypt.compareSync(data.password, user.password);
 
-  console.log("Password Match:", isPasswordMatch);
-
-  if (!isPasswordMatch) {
+  if (!isPasswordMatch)
     throw { statusCode: 400, message: "Incorrect email or password." };
-  }
 
   return {
     _id: user._id,
@@ -60,4 +49,68 @@ const register = async (data) => {
   };
 };
 
-export default { register, login };
+const forgotPassword = async (email) => {
+  const user = await User.findOne({ email });
+
+  if (!user) throw { statusCode: 404, message: "User not found." };
+
+  const token = crypto.randomUUID();
+
+  await ResetPassword.create({
+    userId: user._id,
+    token,
+  });
+
+  // Send email
+  // /reset-password?token=<token>&userId=<userId>
+  await sendEmail(email, {
+    subject: "Reset password link",
+    body: `
+      <div>
+        <h1>Please click the link to reset your password.</h1>
+        <a
+          href="${config.appUrl}/reset-password?token=${token}&userId=${user._id}"
+          style="
+            padding: 5px 15px;
+            background-color: lightblue;
+            color: black;
+            text-decoration: none;
+          "
+          >
+        Reset password
+        </a>
+      </div>
+    `,
+  });
+
+  return { message: "Reset password link send successfully." };
+};
+
+const resetPassword = async (userId, token, newPassword) => {
+  const data = await ResetPassword.findOne({
+    expiresAt: { $gt: Date.now() },
+    userId,
+  }).sort({ expiresAt: -1 });
+
+  if (!data || data.token !== token) {
+    throw { statusCode: 400, message: "Invalid or expired token." };
+  }
+
+  if (data.isUsed) {
+    throw { statusCode: 400, message: "Token has already been used." };
+  }
+
+  const hashedPassword = bcrypt.hashSync(newPassword);
+
+  await User.findByIdAndUpdate(userId, {
+    password: hashedPassword,
+  });
+
+  await ResetPassword.findByIdAndUpdate(data._id, {
+    isUsed: true,
+  });
+
+  return { message: "Password reset successfully." };
+};
+
+export default { register, login, forgotPassword, resetPassword };

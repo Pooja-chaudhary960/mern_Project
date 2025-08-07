@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const config = {
+  appUrl: process.env.APP_URL || "",
   mongoDBUrl: process.env.MONGODB_URL || "",
   name: process.env.NAME || "",
   port: process.env.PORT || 5000,
@@ -13,6 +14,12 @@ const config = {
     apiKey: process.env.CLOUDINARY_API_KEY || "",
     apiSecret: process.env.CLOUDINARY_API_SECRET || "",
   },
+  khalti: {
+    apiKey: process.env.KHALTI_API_KEY || "",
+    apiUrl: process.env.KHALTI_API_URL || "",
+    returnUrl: process.env.KHALTI_RETURN_URL || "",
+  },
+  emailApiKey: process.env.EMAIL_API_KEY || "",
 };
 
 export default config;

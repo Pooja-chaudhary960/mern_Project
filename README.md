@@ -319,3 +319,34 @@ Modify request data
 2. Temporary storage : /uploads-> Buffer (Binary data)
 3. Storage bucket : upload to Cloudinary -> filePath/url
 4. Set the filepath/url: use this filepath/url to store in database.
+
+# Payment 
+1. Payment method use(for e.g. pay via khalti).
+2. Update payment status in our system.
+
+# Khalti
+1. Payment initialize -> Generate url using the input data.
+2. Payment occurs in the khalti portal.
+3. Redirect to your return url after completion.
+
+# Reset password
+1. User requests on Forgot password
+2. Sends an email to that user, with a reset-password link and Token.
+3. Also store this token in the db.
+4. Request for reset password
+5. Includes new password, confirm password with token
+6. Update the password
+
+# Semantics
+- Code readability
+- Code formatting
+- File and folder naming.
+  - In javaScript use either camelCase or kebab-case
+  - For is files use camelCase
+  - For HTML, CSS files use kebab-case
+  - Always use noun
+
+# Debugging 
+- Process of finding errors.
+- Steps to debug
+  1. check the root 

@@ -1,31 +1,81 @@
-import User from '../models/User.js';
+import { ADMIN } from "../constants/roles.js";
+import User from "../models/User.js";
+import uploadFile from "../utils/file.js";
 
-const createUser = async (data) => {
-  return await User.create(data);
+const createUser = async (data) => await User.create(data);
+
+const getUsers = async () => {
+  const users = await User.find();
+
+  return users;
 };
 
-const getUsers = async(data)=>{
-   const users = await User.find();
-   return users;
-} 
+const getUserById = async (id) => {
+  const user = await User.findById(id);
 
-const getUserById = async (id)=>{
-    const user = await User.findById(id);
-    return user;
-}
+  if (!user) {
+    throw {
+      statusCode: 404,
+      message: "User not found",
+    };
+  }
 
-const updateUser = async(id, data)=>{
-    const updatedUser = await User.findByIdAndUpdate(id, data,{new: true});
-    return updatedUser;
-}
-const deleteUser = async(id)=>{
-    await User.findByIdAndDelete(id);
-   
+  return user;
 };
+
+const updateUser = async (id, data, authUser) => {
+  const user = await getUserById(id);
+
+  if (user._id != authUser._id && !authUser.roles.includes(ADMIN)) {
+    throw {
+      statusCode: 403,
+      message: "Access denied.",
+    };
+  }
+
+  const updatedUser = await User.findByIdAndUpdate(
+    id,
+    {
+      name: data.name,
+      phone: data.phone,
+      address: data.address,
+    },
+    { new: true }
+  );
+
+  return updatedUser;
+};
+
+const deleteUser = async (id) => {
+  await User.findByIdAndDelete(id);
+};
+
+const updateProfileImage = async (id, file, authUser) => {
+  const user = await getUserById(id);
+
+  if (user._id != authUser._id && !authUser.roles.includes(ADMIN)) {
+    throw {
+      statusCode: 403,
+      message: "Access denied.",
+    };
+  }
+
+  const uploadedFiles = await uploadFile([file]);
+
+  const updatedUser = await User.findByIdAndUpdate(
+    id,
+    { profileImageUrl: uploadedFiles[0]?.url },
+    { new: true }
+  );
+
+  return updatedUser;
+};
+
 export default {
   createUser,
   getUsers,
   getUserById,
   updateUser,
-  deleteUser
+  deleteUser,
+  updateProfileImage,
 };

@@ -1,17 +1,25 @@
-import express from 'express';
-import userController from '../controllers/userController.js';
+import express from "express";
+import userController from "../controllers/userController.js";
+import roleBasedAuth from "../middlewares/roleBasedAuth.js";
+import { ADMIN } from "../constants/roles.js";
 
 const router = express.Router();
 
+// URL: /api/users
+router.post("/", roleBasedAuth(ADMIN), userController.createUser);
 
-//URL: /api/users
+// URL: /api/users
+router.get("/", roleBasedAuth(ADMIN), userController.getUsers);
 
-router.post('/',userController.createUser);
+// URL: /api/users/:id
+router.get("/:id", roleBasedAuth(ADMIN), userController.getUserById);
 
-router.get('/', userController.getUsers);
+// URL: /api/users/:id
+router.put("/:id", userController.updateUser);
 
-router.get('/:id', userController.getUserById);
-router.put('/:id', userController.updateUser);
-router.delete('/:id', userController.deleteUser);
+// URL: /api/users/:id
+router.delete("/:id", roleBasedAuth(ADMIN), userController.deleteUser);
+
+router.patch("/:id/profile-image", userController.updateProfileImage);
 
 export default router;

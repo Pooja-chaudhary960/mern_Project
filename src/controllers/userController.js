@@ -1,48 +1,67 @@
 import userService from "../services/userService.js";
 
 const createUser = async (req, res) => {
-    console.log("Received req.body:", req.body);
   try {
     const data = await userService.createUser(req.body);
+
     res.status(201).json(data);
   } catch (error) {
-    res.status(500).send(error.message);
+    res.status(error.statusCode || 500).send(error.message);
   }
 };
 
 const getUsers = async (req, res) => {
-  try {
-    const data = await userService.getUsers();
-    res.status(200).json(data); 
-  } catch (error) {
-    res.status(500).send(error.message);
-  }
+  const data = await userService.getUsers();
+
+  res.json(data);
 };
 
 const getUserById = async (req, res) => {
-    const id = req.params.id;
-    const data = await userService.getUserById();
-    res.json(data);
-   
-  };
-
-  const updateUser = async (req, res) => {
-    const id = req.params.id;
-    try{
-        const data = await userService.updateUser(id, req.body);
-        res.status(201).json(data);
-    }catch(error){
-        res.status(500).send(error.message);
-    }
-   
-  }
-  const deleteUser = async (req, res) => {
-  const id = req.params.id;
   try {
-    const data = await userService.deleteUser(id);
+    const id = req.params.id;
+
+    const data = await userService.getUserById(id);
+
+    res.json(data);
+  } catch (error) {
+    res.status(error.statusCode || 500).send(error.message);
+  }
+};
+
+const updateUser = async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    const data = await userService.updateUser(id, req.body, req.user);
+
+    res.status(201).json(data);
+  } catch (error) {
+    res.status(error.statusCode || 500).send(error.message);
+  }
+};
+
+const deleteUser = async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    await userService.deleteUser(id);
+
     res.send(`User deleted successfully with id: ${id}`);
   } catch (error) {
-    res.status(500).send(error.message);
+    res.status(error.statusCode || 500).send(error.message);
+  }
+};
+
+const updateProfileImage = async (req, res) => {
+  const id = req.params.id;
+  const file = req.file;
+
+  try {
+    const data = await userService.updateProfileImage(id, file, req.user);
+
+    res.json(data);
+  } catch (error) {
+    res.status(error.statusCode || 500).send(error.message);
   }
 };
 
@@ -51,5 +70,6 @@ export default {
   getUsers,
   getUserById,
   updateUser,
-  deleteUser
+  deleteUser,
+  updateProfileImage,
 };

@@ -1,0 +1,56 @@
+# React + Vite
+
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+
+Currently, two official plugins are available:
+
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+
+## Expanding the ESLint configuration
+
+If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+
+
+# React
+- The library for web and native user interfaces.
+- Built by Facebook.
+- Used to build single page application.
+- The most popular frontend framework.
+- Huge community.
+- Maintained by Facebook.
+- Job Opportunities.
+
+# Virtual DOM
+- Light weight copy or real DOM
+- Whenever state changes:
+    - React updates the virtual DOM.
+    - Compares with the previous DOM => (Diffing)
+    - Updates only the changed parts in the Real DOM => (Reconciliation)
+    - Faster rendering
+    - Better Performance
+
+# Component
+- UI block 
+- Reusable
+- Functional Component, class Component
+- stateful component: State/UI can be updated.
+- Stateless components: State can be updated, UI cannot be changed.
+
+
+# Hooks
+- Special function
+- It enables us to make functional component stateful.
+- Using hooks, we can implement state management in Functional component.
+
+1. useState
+2. useEffect
+3. useRef
+4. Custom hooks
+
+# state
+- Object (mutable/changeable)
+- state is updated on user interaction, event triggers or API calls
+
+# JSX
+- JS/HTML code

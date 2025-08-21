@@ -3,9 +3,10 @@ import ComponentC from './ComponentC';
 
 function ComponentB({ numB = 0}) {
   return (
-    <div>Square:{numB * numB }
-    <ComponentC numC={numB * numB} />
-    </div>
+    <div style={{border: "1px solid", padding:"1rem"}}>
+        <h1>ComponentB</h1>
+        <ComponentC numC={numB}/>
+        </div>
   )
 }
 

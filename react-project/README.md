@@ -72,3 +72,11 @@ componentWillUnmount
 
 # props drilling: Passing data from a parent component to a deeply nested child component through multiple intermediary components. 
 
+## Redux : A javaScript library for predictable and maintainable global state management.
+The core concepts of redux:
+1. Store: Stores state data, only one store, to maintain single source of truth
+2. Action: Function that is dispatch on user interaction, event trigger, api call (to change state)
+3. Reducer: Binds store and action, stores state data, responsible for UI transition.
+
+# redux toolkit : It is the official library to simplify Redux development.
+

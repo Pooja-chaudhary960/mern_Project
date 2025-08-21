@@ -4,9 +4,10 @@ import ComponentB from './ComponentB';
 function ComponentA({ numA = 0}) {
   return (
     
-    <div>
-        value: {numA + 5}
-        <ComponentB numB={numA + 5 }/>
+       <div style={{border: "1px solid", padding:"1rem"}}>
+        <h1>ComponentA</h1>
+       <span> value:{numA+5}</span>
+        <ComponentB numB={numA + 5}/>
         </div>
   )
 }

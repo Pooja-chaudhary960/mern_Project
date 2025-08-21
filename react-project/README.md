@@ -20,6 +20,7 @@ If you are developing a production application, we recommend using TypeScript wi
 - Huge community.
 - Maintained by Facebook.
 - Job Opportunities.
+- one way data flow.
 
 # Virtual DOM
 - Light weight copy or real DOM
@@ -43,14 +44,15 @@ If you are developing a production application, we recommend using TypeScript wi
 - It enables us to make functional component stateful.
 - Using hooks, we can implement state management in Functional component.
 
-1. useState
-2. useEffect
-3. useRef
-4. Custom hooks
+1. useState: Local state management
+2. useEffect: side effect
+3. useRef : accessing DOM elements
+4. Custom hooks 
 
 # State
 - Object (mutable/changeable)
 - state is updated on user interaction, event triggers or API calls
+- Whenever state value changes, UI is re-rendered.
 
 # JSX
 - JS/HTML code
@@ -58,3 +60,15 @@ If you are developing a production application, we recommend using TypeScript wi
 # Props
 - Properties of a component.
 - Similar to HTML element attribute.
+
+# Lifecycle methods
+1. Component create
+2. Component update
+3. Component delete
+
+componentDidMount
+componentDidUpdate
+componentWillUnmount
+
+# props drilling: Passing data from a parent component to a deeply nested child component through multiple intermediary components. 
+

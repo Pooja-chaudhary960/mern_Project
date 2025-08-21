@@ -48,9 +48,13 @@ If you are developing a production application, we recommend using TypeScript wi
 3. useRef
 4. Custom hooks
 
-# state
+# State
 - Object (mutable/changeable)
 - state is updated on user interaction, event triggers or API calls
 
 # JSX
 - JS/HTML code
+
+# Props
+- Properties of a component.
+- Similar to HTML element attribute.

@@ -1,13 +1,16 @@
-import React from 'react'
+import React from 'react';
 
-function Card() {
+function Card(props) {
+  console.log(props); 
+
+  const { title, brand, price} = props;
   return (
-    <div>
-        <h1 style={{color:"red"}}>Card Title</h1>
-        <p>Card info</p>
-        <button>Click me</button>
+    <div className='card'>
+      <h1>{title}</h1>
+      <p>{brand}</p>
+      <span>{price}</span>
     </div>
-  )
+  );
 }
 
 export default Card;

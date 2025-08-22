@@ -2,8 +2,9 @@ import React, { useEffect, useState, useRef } from 'react';
 import Card from './Card';
 import "./App.css"
 import ComponentA from './ComponentA';
-import ComponentB from './ComponentB';
-import ComponentC from './ComponentC';
+import ProductsTable from './ProductsTable';
+
+
 
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
 
   return (
     <div>  
+      <ProductsTable />
       <span>count: {count}</span>
       <ComponentA numA={count} />
     
@@ -38,6 +40,7 @@ function App() {
       <Card title="Vivo 19 pro" brand="Vivo" price={22000} />
       <Card title="Iphone 14" brand="Iphone" price={100000} />
       <Card title="Redmi Note 9 Pro" brand="Redmi"  /> 
+   
 
     </div>
   );

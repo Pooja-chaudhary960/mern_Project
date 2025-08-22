@@ -80,3 +80,5 @@ The core concepts of redux:
 
 # redux toolkit : It is the official library to simplify Redux development.
 
+# React Router
+- Route is a URL endpoint, that defines component/page to load/show on URL match

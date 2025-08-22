@@ -3,9 +3,8 @@ import Card from './Card';
 import "./App.css"
 import ComponentA from './ComponentA';
 import ProductsTable from './ProductsTable';
-
-
-
+import './index.css'
+import Header from './Header';
 
 function App() {
   const [count, setCount] = useState(0);

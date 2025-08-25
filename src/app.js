@@ -9,7 +9,7 @@ import connectCloudinary from "./config/cloudinary.js";
 import connectDB from "./config/database.js";
 import logger from "./middlewares/logger.js";
 import orderRoutes from "./routes/orderRoute.js";
-import productRoutes from "./routes/productRoute.js";
+import productRoutes from "./routes/productRoutes.js";
 import todoRoutes from "./routes/todoRoute.js";
 import userRoutes from "./routes/userRoute.js";
 
@@ -27,7 +27,7 @@ app.get("/", (req, res) => {
   res.json({
     name: config.name,
     port: config.port,
-    status: "OK",
+    status: "Running...",
     version: config.version,
   });
 });

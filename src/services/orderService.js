@@ -2,8 +2,8 @@ import Order from "../models/Order.js";
 import Payment from "../models/Payment.js";
 import crypto from "crypto";
 import payment from "../utils/payment.js";
-import { ORDER_STATUS_CONFIRMED } from "../constants/orderStatuses.js";
-import { PAYMENT_STATUS_COMPLETED } from "../constants/paymenStatuses.js";
+import { ORDER_STATUS_CONFIRMED } from "../constants/orderStatus.js";
+import { PAYMENT_STATUS_COMPLETED } from "../constants/paymentStatus.js";
 import { ADMIN } from "../constants/roles.js";
 
 const getOrders = async () => {
@@ -140,6 +140,13 @@ const confirmOrderPayment = async (id, status, user) => {
     { new: true }
   );
 };
+const getOrdersOfMerchant = async (userId) => {
+  const orders = await Order.find()
+    .populate("orderItems.product")
+    .populate("user", ["name", "email", "phone", "address"])
+    .populate("payment");
+  return orders;
+};
 
 export default {
   createOrder,
@@ -150,4 +157,5 @@ export default {
   updateOrder,
   orderPaymentViaKhalti,
   confirmOrderPayment,
+  getOrdersOfMerchant
 };

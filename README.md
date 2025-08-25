@@ -349,4 +349,27 @@ Modify request data
 # Debugging 
 - Process of finding errors.
 - Steps to debug
-  1. check the root 
+  1. check the root app.js file
+  2. Check the routes (check spelling, route orders)
+  3. Check the controllers, check spelling, check params, arguments
+  4. Check the service, check spelling, check params, arguments
+
+  # Todos
+  - API integration
+  - Multi vendor system
+  - Deployment
+  - Typescript
+  - SMS 
+
+  # AI Integration
+  - Gemini
+
+  # Multi Vendor system
+  Every merchant should be able to fetch:
+  1. List of products created by them
+  2. Orders made on their product
+
+  They should be able to update/delete their product.
+
+
+  

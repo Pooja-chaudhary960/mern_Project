@@ -140,12 +140,71 @@ const confirmOrderPayment = async (id, status, user) => {
     { new: true }
   );
 };
-const getOrdersOfMerchant = async (userId) => {
-  const orders = await Order.find()
-    .populate("orderItems.product")
-    .populate("user", ["name", "email", "phone", "address"])
-    .populate("payment");
-  return orders;
+const getOrdersOfMerchant = async (merchantId) => {
+  // const orders = await Order.find()
+  //   .populate("orderItems.product")
+  //   .populate("user", ["name", "email", "phone", "address"])
+  //   .populate("payment");
+
+  `SELECT * FROM orders
+  LEFT JOIN products ON orders.product_id = as orderProducts`;
+    const orders = await Order.aggregate([
+      {
+        $lookup:{
+          from: "products",
+          localField:"orderItems.product",
+          foreignField:"_id",
+          as:"orderItems"
+        },
+        },
+        {
+        $lookup:{
+          from: "users",
+          localField:"user",
+          foreignField:"_id",
+          as:"user"
+        },
+      },
+       {
+        $lookup:{
+          from: "payments",
+          localField:"payment",
+          foreignField:"_id",
+          as:"payment"
+        },
+      },
+      {
+        $unwind:"$user" // unwind means convert array into object.
+      },
+      {
+        $unwind:"$payment"
+      },
+      {
+        $project: {
+          "user.name":1,
+          "user.email":1,
+          "user.phone":1,
+          "user.address":1,
+           orderNumber:1, 
+           orderItems:1,
+            payment:1, 
+            status:1,
+            totalPrice:1,
+            shippingAddress:1,
+            createdAt:1
+        }
+      },
+    ]);
+
+   return orders.map((order)=>{
+      const filterItems = order.orderItems.filter(
+        (item)=>item.createBy == merchantId
+      );
+      return{
+        ...order,
+        orderItems: filterItems,
+      };
+    });
 };
 
 export default {

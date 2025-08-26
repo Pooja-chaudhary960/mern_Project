@@ -67,7 +67,7 @@ const updateOrder = async (id, data, user) => {
 const deleteOrder = async (id, user) => {
   const order = await getOrderById(id);
 
-  if (order.user._id != user._id && !user.roles.includes(ADMIN)) {
+  if (order.user != user._id && !user.roles.includes(ADMIN)) {
     throw {
       statusCode: 403,
       message: "Access denied.",

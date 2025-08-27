@@ -4,15 +4,13 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 const AuthMenu = () => {
-  const router = useRouter();
+  const authToken = localStorage.getItem("authToken");
 
-  let authToken = null;
-  if (typeof window !== "undefined") {
-    authToken = localStorage.getItem("authToken");
-  }
+  const router = useRouter();
 
   function logout() {
     localStorage.removeItem("authToken");
+
     router.push(LOGIN_ROUTE);
   }
 

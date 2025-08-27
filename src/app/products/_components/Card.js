@@ -2,7 +2,6 @@ import { FaCartPlus, FaStar } from "react-icons/fa6";
 import { PRODUCTS_ROUTE } from "@/constants/routes";
 import Image from "next/image";
 import Link from "next/link";
-
 import imagePlaceholder from "@/assets/images/products/placeholder.png";
 
 const ProductCard = ({ product }) => {

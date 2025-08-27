@@ -1,31 +1,24 @@
-async function getProductById(productId) {
-  const product = await fetch(
-    `https://node-20250302.vercel.app/api/products/${productId}`
-  )
-    .then((res) => res?.json())
-    .catch((error) => {
-      throw new Error("Product not found!");
-    });
+import { getProductById } from "@/api/products";
 
-  return product;
-}
 
 export const generateMetadata = async ({ params }) => {
   const productId = (await params).productId;
 
-  const product = await getProductById(productId);
+  const response = await getProductById(productId);
 
+  const product = response.data;
   return {
     title: product?.name,
     keywords: `${product?.name}, ${product?.brand}, ${product?.category}`,
   };
 };
 
-const ProductDetails = async ({ params, searchParams }) => {
+const ProductDetails = async ({ params,}) => {
   const productId = (await params).productId;
-  const query = await searchParams;
+  
+  const response = await getProductById(productId);
 
-  const product = await getProductById(productId);
+  const product = response.data;
 
   return (
     <div>

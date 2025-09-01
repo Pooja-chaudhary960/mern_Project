@@ -1,20 +1,24 @@
 "use client";
 import { LOGIN_ROUTE } from "@/constants/routes";
+import { logoutUser } from "@/redux/auth/authSlice";
+import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 const AuthMenu = () => {
-  const authToken = localStorage.getItem("authToken");
+  const { user } = useSelector((state) => state.auth);
+
+  const dispatch = useDispatch();
 
   const router = useRouter();
 
   function logout() {
-    localStorage.removeItem("authToken");
+    dispatch(logoutUser());
 
     router.push(LOGIN_ROUTE);
   }
 
-  if (authToken)
+  if (user)
     return (
       <button
         onClick={logout}

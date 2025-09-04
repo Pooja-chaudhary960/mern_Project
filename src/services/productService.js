@@ -78,7 +78,14 @@ const getProducts = async (query) => {
 };
 
 const updateProduct = async (id, data, files, user) => {
-  const product = await getProductById(id);
+  const product = await Product.findById(id);
+
+  if(!product){
+    throw{
+      statusCode: 404,
+      message: "Product not found."
+    };
+  }
 
   if (product.createdBy != user._id && !user.roles.includes(ADMIN)) {
     throw {
@@ -101,9 +108,19 @@ const updateProduct = async (id, data, files, user) => {
   return updatedProduct;
 };
 
+const getBrands = async ()=>{
+  return await Product.distinct("brand");
+};
+
+const getCategories = async ()=>{
+  return await Product.distinct("categories");
+};
+
 export default {
   createProduct,
   deleteProduct,
+  getBrands,
+  getCategories,
   getProductById,
   getProducts,
   updateProduct,

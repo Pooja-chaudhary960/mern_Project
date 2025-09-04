@@ -7,6 +7,20 @@ const getProducts = async (req, res) => {
   res.status(200).json(products);
 };
 
+const getBrands = async (req, res) => {
+  // Request query
+  const brands = await productService.getBrands();
+
+  res.status(200).json(brands);
+};
+
+const getCategories = async (req, res) => {
+  // Request query
+  const categories= await productService.getCategories();
+
+  res.status(200).json(categories);
+};
+
 const getProductById = async (req, res) => {
   // Request params
   try {
@@ -65,6 +79,8 @@ const deleteProduct = async (req, res) => {
 };
 
 export default {
+  getBrands,
+  getCategories,
   getProducts,
   createProduct,
   getProductById,

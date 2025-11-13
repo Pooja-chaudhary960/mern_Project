@@ -154,3 +154,33 @@ if authToken -> User is logged in -> use this authToken in api request
 - local storage: 5MB: Browser: data is stored forever
 - session storage: 5MB: Browser: data is cleared on tab closed
 - cookie storage: 4KB: Browser and server: expiry date can be set
+
+## Rendering: 
+- Process of transforming component code into UI.
+- Client side Rendering (CSR) and Server Side Rendering (SSR).
+
+## CSR: Client Side Rendering.
+- If Rendering is done in browser.
+- pros: SEO friendly hudina.
+
+# SSR: Server side Rendering.
+- If rendering done in server
+
+===================================================
+
+## React Server Components.
+- Architecture designed by react team.
+- Uses both client and server environment functionality.
+- Dual components model
+    - Client component
+    - Server component
+
+# RSC -> Client component
+- Interactivity 
+- Event
+- State management
+
+# RSC -> Server component
+- Fetch data
+- Send api requests
+

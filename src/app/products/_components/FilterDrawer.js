@@ -58,7 +58,7 @@ const FilterDrawer = ({ showFilter, setShowFilter, brands, categories }) => {
   }
 
   return (
-    <div className={showFilter ? "block" : "hidden"}>
+    <div className={showFilter ? "bloc absolute" : "hidden"}>
       <div
         className="fixed top-0 left-0 h-screen w-full bg-black dark:bg-slate-900 opacity-20 z-10"
         onClick={() => setShowFilter(false)}

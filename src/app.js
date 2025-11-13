@@ -15,6 +15,7 @@ import userRoutes from "./routes/userRoute.js";
 
 
 const app = express();
+app.use(express.json());
 
 const upload = multer({ storage: multer.memoryStorage() });
 

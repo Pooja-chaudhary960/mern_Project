@@ -12,7 +12,11 @@ const getOrders = async (req, res) => {
 
 const getOrdersByUser = async (req, res) => {
   try {
-    const data = await orderService.getOrdersByUser(req.user._id);
+    // Extract the 'status' from the URL query string
+    const { status } = req.query; 
+
+    // Pass the status parameter to the service function
+    const data = await orderService.getOrdersByUser(req.user._id, status); 
 
     res.json(data);
   } catch (error) {
@@ -108,15 +112,14 @@ const getOrdersOfMerchant = async (req, res) => {
   }
 };
 
-
 export default {
+  confirmOrderPayment,
   createOrder,
   deleteOrder,
   getOrderById,
   getOrders,
   getOrdersByUser,
-  updateOrder,
+  getOrdersOfMerchant,
   orderPaymentViaKhalti,
-  confirmOrderPayment,
-  getOrdersOfMerchant
+  updateOrder,
 };

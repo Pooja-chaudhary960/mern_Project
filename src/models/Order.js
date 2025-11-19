@@ -62,10 +62,10 @@ const orderSchema = new mongoose.Schema({
     default: Date.now(),
     immutable: true,
   },
-  payment:{
+  payment: {
     type: mongoose.Types.ObjectId,
-    ref: "Payment"
-  }
+    ref: "Payment",
+  },
 });
 
 const model = mongoose.model("Order", orderSchema);

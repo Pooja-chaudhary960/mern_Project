@@ -14,11 +14,17 @@ const getOrders = async () => {
   return orders;
 };
 
-const getOrdersByUser = async (userId) => {
-  const orders = await Order.find({ user: userId })
-    .populate("orderItems.product")
-    .populate("user", ["name", "email", "phone", "address"])
-    .populate("payment");
+const getOrdersByUser = async (userId, status) => {
+  const filter = {
+    user: userId
+  };
+
+  if (status) {
+    filter.status = status.toUpperCase(); 
+  }
+  const orders = await Order.find(filter)
+    .populate('orderItems.product') 
+    .sort({ createdAt: -1 });
 
   return orders;
 };
@@ -67,7 +73,7 @@ const updateOrder = async (id, data, user) => {
 const deleteOrder = async (id, user) => {
   const order = await getOrderById(id);
 
-  if (order.user != user._id && !user.roles.includes(ADMIN)) {
+  if (order.user._id != user._id && !user.roles.includes(ADMIN)) {
     throw {
       statusCode: 403,
       message: "Access denied.",
@@ -140,71 +146,56 @@ const confirmOrderPayment = async (id, status, user) => {
     { new: true }
   );
 };
+
 const getOrdersOfMerchant = async (merchantId) => {
-  // const orders = await Order.find()
-  //   .populate("orderItems.product")
-  //   .populate("user", ["name", "email", "phone", "address"])
-  //   .populate("payment");
+  const orders = await Order.aggregate([
+    {
+      $lookup: {
+        from: "products",
+        localField: "orderItems.product",
+        foreignField: "_id",
+        as: "orderItems",
+      },
+    },
+    {
+      $lookup: {
+        from: "users",
+        localField: "user",
+        foreignField: "_id",
+        as: "user",
+      },
+    },
+    {
+      $unwind: "$user",
+    },
+    {
+      $project: {
+        "user.name": 1,
+        "user.email": 1,
+        "user.phone": 1,
+        "user.address": 1,
+        orderNumber: 1,
+        orderItems: 1,
+        status: 1,
+        totalPrice: 1,
+        shippingAddress: 1,
+        createdAt: 1,
+      },
+    },
+  ]);
 
-  `SELECT * FROM orders
-  LEFT JOIN products ON orders.product_id = as orderProducts`;
-    const orders = await Order.aggregate([
-      {
-        $lookup:{
-          from: "products",
-          localField:"orderItems.product",
-          foreignField:"_id",
-          as:"orderItems"
-        },
-        },
-        {
-        $lookup:{
-          from: "users",
-          localField:"user",
-          foreignField:"_id",
-          as:"user"
-        },
-      },
-       {
-        $lookup:{
-          from: "payments",
-          localField:"payment",
-          foreignField:"_id",
-          as:"payment"
-        },
-      },
-      {
-        $unwind:"$user" // unwind means convert array into object.
-      },
-      {
-        $unwind:"$payment"
-      },
-      {
-        $project: {
-          "user.name":1,
-          "user.email":1,
-          "user.phone":1,
-          "user.address":1,
-           orderNumber:1, 
-           orderItems:1,
-            payment:1, 
-            status:1,
-            totalPrice:1,
-            shippingAddress:1,
-            createdAt:1
-        }
-      },
-    ]);
-
-   return orders.map((order)=>{
-      const filterItems = order.orderItems.filter(
-        (item)=>item.createBy == merchantId
+  return orders
+    .map((order) => {
+      const filteredItems = order.orderItems.filter(
+        (item) => item.createdBy == merchantId
       );
-      return{
+
+      return {
         ...order,
-        orderItems: filterItems,
+        orderItems: filteredItems,
       };
-    });
+    })
+    .filter((order) => order.orderItems.length > 0);
 };
 
 export default {
@@ -216,5 +207,5 @@ export default {
   updateOrder,
   orderPaymentViaKhalti,
   confirmOrderPayment,
-  getOrdersOfMerchant
+  getOrdersOfMerchant,
 };

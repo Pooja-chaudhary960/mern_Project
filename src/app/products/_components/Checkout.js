@@ -1,5 +1,5 @@
-import createOrder from "@/api/orders";
-import { PRODUCTS_ORDERS_ROUTE } from "@/constants/routes";
+import { createOrder } from "@/api/orders";
+import { ORDERS_ROUTE } from "@/constants/routes";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
@@ -23,30 +23,32 @@ const Checkout = ({ products, totalPrice }) => {
   })) : [];
 
   function checkoutOrder() {
-    if (orderItems.length === 0) {
-      toast.error("Please add products to the cart before proceeding.", { autoClose: 1500 });
-      return;
-    }
-
-    setLoading(true);
-
-    createOrder({
-      orderItems,
-      totalPrice,
-      shippingAddress,
-    })
-      .then(() => {
-        toast.success("Order created successfully.", { autoClose: 1500 });
-        router.push(PRODUCTS_ORDERS_ROUTE); 
-        dispatch(clearCart());
-      })
-      .catch((error) => {
-        const errorMessage = error?.response?.data || "Something went wrong. Please try again.";
-        toast.error(errorMessage, { autoClose: 1500 });
-        router.push(PRODUCTS_ORDERS_ROUTE); 
-      })
-      .finally(() => setLoading(false));
+  if (orderItems.length === 0) {
+    toast.error("Please add products to the cart before proceeding.", { autoClose: 1500 });
+    return;
   }
+
+  setLoading(true);
+
+  createOrder({
+    orderItems,
+    totalPrice,
+    shippingAddress,
+  })
+    .then(() => {
+      toast.success("Order created successfully.", { autoClose: 1500 });
+      setTimeout(() => { 
+        router.push(ORDERS_ROUTE);
+      }, 1500);  
+      dispatch(clearCart());
+    })
+    .catch((error) => {
+      const errorMessage = error?.response?.data || "Something went wrong. Please try again.";
+      toast.error(errorMessage, { autoClose: 1500 });
+      router.push(ORDERS_ROUTE);
+    })
+    .finally(() => setLoading(false));
+}
 
   return (
     <button

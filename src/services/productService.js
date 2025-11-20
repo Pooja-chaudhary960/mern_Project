@@ -46,12 +46,6 @@ const getProductById = async (id) => {
     };
   }
 
-  if (product.stock < 1) {
-    throw {
-      message: "Product not available",
-    };
-  }
-
   return product;
 };
 
@@ -78,14 +72,7 @@ const getProducts = async (query) => {
 };
 
 const updateProduct = async (id, data, files, user) => {
-  const product = await Product.findById(id);
-
-  if(!product){
-    throw{
-      statusCode: 404,
-      message: "Product not found."
-    };
-  }
+  const product = await getProductById(id);
 
   if (product.createdBy != user._id && !user.roles.includes(ADMIN)) {
     throw {
@@ -108,18 +95,23 @@ const updateProduct = async (id, data, files, user) => {
   return updatedProduct;
 };
 
-const getBrands = async ()=>{
+const getBrands = async () => {
   return await Product.distinct("brand");
 };
 
-const getCategories = async ()=>{
-  return await Product.distinct("categories");
+const getCount = async () => {
+  return await Product.countDocuments();
+};
+
+const getCategories = async () => {
+  return await Product.distinct("category");
 };
 
 export default {
   createProduct,
   deleteProduct,
   getBrands,
+  getCount,
   getCategories,
   getProductById,
   getProducts,

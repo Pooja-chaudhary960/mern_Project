@@ -12,10 +12,7 @@ const getOrders = async (req, res) => {
 
 const getOrdersByUser = async (req, res) => {
   try {
-    // Extract the 'status' from the URL query string
     const { status } = req.query; 
-
-    // Pass the status parameter to the service function
     const data = await orderService.getOrdersByUser(req.user._id, status); 
 
     res.json(data);

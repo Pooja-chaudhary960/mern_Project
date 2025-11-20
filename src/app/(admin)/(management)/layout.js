@@ -17,5 +17,6 @@ export default function ManagementLayout({ children }) {
     if (!allowedRoles) router.push(HOME_ROUTE);
   },[]);
 
-  return <div>{children}</div>;
+  return (
+  <div>{children}</div>);
 }
